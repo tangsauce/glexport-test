@@ -1,3 +1,8 @@
+# Jeff
+
+- sequelize-autoimport to programatically generate Sequelize Models
+- if you receive `TypeError: connection.query(...).on is not a function` downgrade `pg` from 7 to pg@6.4.1
+
 glexport-test
 =============
 

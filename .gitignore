@@ -1,4 +1,6 @@
 .byebug_history
+.bundle/
+vendor/
 
 # Rubymine
 .idea/
