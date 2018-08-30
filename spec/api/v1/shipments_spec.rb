@@ -20,6 +20,7 @@ RSpec.describe "api/v1/shipments resouces" do
     before(:all) { reset_db }
 
     context 'with valid params' do
+
       context 'json content' do
         # Tests the structure of the returned json
         # What should be returned when hitting /api/v1/shipments?company_id=#{YALMART_ID}
@@ -55,7 +56,6 @@ RSpec.describe "api/v1/shipments resouces" do
         #     }
         #   ]
         # }
-
         context 'shipment json' do
           it 'includes shipment name' do
             response = http.get "#{BASE_URL}/api/v1/shipments?company_id=#{YALMART_ID}"
@@ -66,7 +66,6 @@ RSpec.describe "api/v1/shipments resouces" do
             expect(json['records'].map { |shipment_json| shipment_json['name'] }).to include('yalmart apparel from china')
           end
         end
-
         context 'products json' do
           it 'includes product info and shipment specific product information' do
             response = http.get "#{BASE_URL}/api/v1/shipments?company_id=#{YALMART_ID}"
@@ -79,7 +78,6 @@ RSpec.describe "api/v1/shipments resouces" do
             expect(products_json.map { |product_json| product_json['description'] }).to match_array(['shoes', 'pants'])
             expect(products_json.map { |product_json| product_json['quantity'].to_i }).to match_array([123, 234])
           end
-
           it 'includes the calculated attribute active_shipment_count' do
             # This active_shipment_count field should be a code smell to you
             response = http.get "#{BASE_URL}/api/v1/shipments?company_id=#{YALMART_ID}"
@@ -94,7 +92,6 @@ RSpec.describe "api/v1/shipments resouces" do
 
       context 'sorts' do
         # Company YALMART has three shipments, departing (in order of id) Jan 1, Jan 3, Jan 2
-
         context 'default sort' do
           it 'sorts by id ascending by default' do
             response = http.get "#{BASE_URL}/api/v1/shipments?company_id=#{YALMART_ID}"
@@ -103,7 +100,6 @@ RSpec.describe "api/v1/shipments resouces" do
             expect(json['records'].map { |shipment_json| shipment_json['id'] }).to eq([1,2,3])
           end
         end
-
         context 'international departure date' do
           it 'allows ascending sort' do
             response = http.get "#{BASE_URL}/api/v1/shipments?company_id=#{YALMART_ID}&sort=international_departure_date&direction=asc"
@@ -111,7 +107,6 @@ RSpec.describe "api/v1/shipments resouces" do
             json = JSON.parse(response.body)
             expect(json['records'].map { |shipment_json| shipment_json['id'] }).to eq([1,3,2])
           end
-
           it 'allows descending sort' do
             response = http.get "#{BASE_URL}/api/v1/shipments?company_id=#{YALMART_ID}&sort=international_departure_date&direction=desc"
             expect(response.status).to eq(HTTP_SUCCESS)
@@ -123,7 +118,6 @@ RSpec.describe "api/v1/shipments resouces" do
 
       context 'filters' do
         # Company YALMART has three shipments, two by ocean and one by truck
-
         context 'international_transportation_mode' do
           it 'filters by ocean' do
             response = http.get "#{BASE_URL}/api/v1/shipments?company_id=#{YALMART_ID}&international_transportation_mode=ocean"
@@ -131,7 +125,6 @@ RSpec.describe "api/v1/shipments resouces" do
             json = JSON.parse(response.body)
             expect(json['records'].map { |shipment_json| shipment_json['id'] }).to match_array([1, 2])
           end
-
           it 'filters by truck' do
             response = http.get "#{BASE_URL}/api/v1/shipments?company_id=#{YALMART_ID}&international_transportation_mode=truck"
             expect(response.status).to eq(HTTP_SUCCESS)
@@ -143,7 +136,6 @@ RSpec.describe "api/v1/shipments resouces" do
 
       context 'pagination' do
         # Company DOSTCO has six shipments, with ids [4, 5, 6, 7, 8, 9]
-
         context 'with no params' do
           it 'defaults to 4 results' do
             response = http.get "#{BASE_URL}/api/v1/shipments?company_id=#{DOSTCO_ID}"
@@ -152,7 +144,6 @@ RSpec.describe "api/v1/shipments resouces" do
             expect(json['records'].map { |shipment_json| shipment_json['id'] }).to eq([4, 5, 6, 7])
           end
         end
-
         context 'with page params' do
           it 'allows page navigation with the default 4 per page' do
             response = http.get "#{BASE_URL}/api/v1/shipments?company_id=#{DOSTCO_ID}&page=2"
@@ -161,7 +152,6 @@ RSpec.describe "api/v1/shipments resouces" do
             expect(json['records'].map { |shipment_json| shipment_json['id'] }).to eq([8, 9])
           end
         end
-
         context 'with explicit page and per params' do
           it 'allows custom pagination' do
             response = http.get "#{BASE_URL}/api/v1/shipments?company_id=#{DOSTCO_ID}&page=2&per=2"
@@ -171,6 +161,7 @@ RSpec.describe "api/v1/shipments resouces" do
           end
         end
       end
+
     end
 
     context 'with invalid params' do
@@ -182,6 +173,7 @@ RSpec.describe "api/v1/shipments resouces" do
           expect(json['errors']).to eq(['company_id is required'])
         end
       end
+
     end
   end
 end
