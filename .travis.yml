@@ -1,4 +1,6 @@
 language: ruby
 rvm:
   - 2.5
-  - jruby
+install:
+  - bundle install --path vendor/bundle
+  - yarn install
