@@ -4,3 +4,8 @@ rvm:
 install:
   - bundle install --path vendor/bundle
   - yarn install
+services:
+  - postgresql
+before_script:
+  - psql -c 'create database glexport_development;' -U postgres
+  - pg_restore -x -d glexport_development glexport_development.psql.dump
