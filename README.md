@@ -1,7 +1,8 @@
 # Jeff
 
-- sequelize-autoimport to programatically generate Sequelize Models
-- if you receive `TypeError: connection.query(...).on is not a function` downgrade `pg` from 7 to pg@6.4.1
+- Todo: get build to pass tests on Travis. A mix of Node and Rails commands
+- used npm package [`sequelize-auto`](!https://github.com/sequelize/sequelize-auto) to programmatically generate [Sequelize](!http://docs.sequelizejs.com/) models (uninstalled package from npm after command line usage)
+- had to downgrade `pg` to 6.4.1 because of error `TypeError: connection.query(...).on is not a function` 
 
 glexport-test
 =============
